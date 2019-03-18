@@ -182,7 +182,6 @@ class Model:
             result = max(result, x.shape[aspect])
         return result
 
-
     def __str__(self):
         return json.dumps({
             'max_2d_width': self._max_2d_width,
