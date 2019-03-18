@@ -111,20 +111,30 @@ class Model:
         self._max_3d_width = self._get_max_dimension(X, 3, 1)
         self._max_3d_height = self._get_max_dimension(X, 3, 0)
 
-
     def transform(self, X, Y):
-        X_t = []
+        X_color = []
+        X_grayscale = []
+        Y_color = []
+        Y_grayscale = []
         print('Padding training images...')
-        for x in X:
-            X_t.append(self._transform_grayscale(x) if x.ndim == 2
-                       else self._transform_color(x))
-        Y_t = [keras.utils.to_categorical(
-            self._class2idx[y], len(self._classes)) for y in Y]
-        return (X_t, Y_t)
+        for idx, x in enumerate(X):
+            if x.ndim == 2:
+                X_grayscale.append(self._transform_grayscale(x))
+                Y_grayscale.append(
+                    keras.utils.to_categorical(
+                        self._class2idx[Y[idx]], len(self._classes)))
+            elif x.ndim == 3:
+                X_color.append(self._transform_color(x))
+                Y_color.append(
+                    keras.utils.to_categorical(
+                        self._class2idx[Y[idx]], len(self._classes)))
+        return (numpy.array(X_color),
+                numpy.array(Y_color),
+                numpy.array(X_grayscale),
+                numpy.array(Y_grayscale))
 
-    def fit(self, X, Y):
-        X_grayscale, Y_grayscale, X_color, Y_color = self._split_color_grayscale(X, Y)
-        self._fit_grayscale(X_grayscale, Y_grayscale)
+    def fit(self, X_color, Y_color, X_grayscale, Y_grayscale):
+        #self._fit_grayscale(X_grayscale, Y_grayscale)
         self._fit_color(X_color, Y_color)
 
     def _fit_grayscale(self, X, Y):
@@ -134,7 +144,7 @@ class Model:
             loss='categorical_crossentropy',
             optimizer='adam',
             metrics=['accuracy', 'top_k_categorical_accuracy'])
-        self._color.fit(
+        self._grayscale.fit(
             X, Y, batch_size=64, epochs=1, validation_split=0.1, shuffle=True)
 
     def _fit_color(self, X, Y):
@@ -172,24 +182,6 @@ class Model:
             result = max(result, x.shape[aspect])
         return result
 
-    def _split_color_grayscale(self, X, Y):
-        X_grayscale = []
-        Y_grayscale = []
-        X_color = []
-        Y_color = []
-        for idx, x in enumerate(X):
-            if x.ndim == 2:
-                X_grayscale.append(x)
-                Y_grayscale.append(Y[idx])
-            elif x.ndim == 3:
-                X_color.append(x)
-                Y_color.append(Y[idx])
-        return (
-            numpy.array(X_grayscale),
-            numpy.array(Y_grayscale),
-            numpy.array(X_color),
-            numpy.array(Y_color))
-
 
     def __str__(self):
         return json.dumps({
@@ -199,15 +191,17 @@ class Model:
             'max_3d_height': self._max_3d_height,
         })
 
+
 def main():
     dataset = pandas.read_csv('./data/train.csv')
-    X = [load_image(x) for x in dataset['Image'].values]
-    Y = dataset['Id'].values
+    X = [load_image(x) for x in dataset['Image'].values[:1000]]
+    Y = dataset['Id'].values[:1000]
     print()
     model = Model(X, Y)
     print(str(model))
-    X, Y = model.transform(X, Y)
-    model.fit(X, Y)
+    X_color, Y_color, X_grayscale, Y_grayscale = model.transform(X, Y)
+    model.fit(X_color, Y_color, X_grayscale, Y_grayscale)
+
 
 if __name__ == '__main__':
     main()
