@@ -5,6 +5,7 @@ Map<String, List<String>> whales = {'w_f48451c': ['0000e88ab.jpg', '0af805558.jp
 class State {
   String view = 'list';
   List<String> args = [];
+  File upload = null;
 }
 
 typedef StateListener = void Function(State state);
@@ -61,8 +62,56 @@ HtmlElement whaleView(State state) {
   return element;
 }
 
-void handleUpload(_) {
-  print('Yo!');
+HtmlElement previewImage(State state) {
+  DivElement element = DivElement();
+  element.className = 'preview-image';
+  ImageElement image = ImageElement();
+  FileReader reader = FileReader();
+  reader.onLoad.listen((_) {
+    image.src = reader.result;
+  });
+  reader.readAsDataUrl(state.upload);
+  element.children.add(image);
+  return element;
+}
+
+HtmlElement previewResults(State state) {
+  DivElement element = DivElement();
+  element.className = 'preview-results';
+  return element;
+}
+
+HtmlElement uploadView(State state) {
+  DivElement container = DivElement();
+  container.className = 'preview-container';
+  DivElement header = DivElement();
+  header.className = 'preview-header';
+  HeadingElement left = HeadingElement.h1();
+  left.text = 'Uploaded';
+  HeadingElement right = HeadingElement.h1();
+  right.text = 'Matches';
+  header.children.add(left);
+  header.children.add(right);
+  DivElement element = DivElement();
+  element.className = 'preview';
+  element.children.add(previewImage(state));
+  element.children.add(previewResults(state));
+  container.children.add(header);
+  container.children.add(element);
+  return container;
+}
+
+void handleUpload(event) {
+  List<File> files = event.target.files;
+  if (files == null || files.isEmpty) {
+    return;
+  }
+
+  dispatch((state) {
+    state.upload = files[0];
+  });
+
+  window.location.hash = '!/upload';
 }
 
 void render(State state) {
@@ -73,6 +122,9 @@ void render(State state) {
       break;
     case 'whale':
       element = whaleView(state);
+      break;
+    case 'upload':
+      element = uploadView(state);
       break;
   }
 
