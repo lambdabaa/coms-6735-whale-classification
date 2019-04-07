@@ -1,0 +1,16 @@
+name: whale_classification
+description: Model and paper studying humpback whale classification
+version: 1.0.0
+homepage: https://github.com/lambdabaa/coms-6735-whale-classification
+author: lambdabaa
+
+environment:
+  sdk: '>=2.1.0 <3.0.0'
+
+#dependencies:
+#  path: ^1.4.1
+
+dev_dependencies:
+  build_runner: ^1.1.2
+  build_web_compilers: ^1.0.0
+  pedantic: ^1.0.0

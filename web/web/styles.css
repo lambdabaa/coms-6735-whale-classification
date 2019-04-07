@@ -1,0 +1,97 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+html, body {
+  background-color: #ccc;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 30px;
+}
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.whale {
+  border: 1px solid #999;
+  height: 100px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  width: 100px;
+}
+
+.whale-link {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: black;
+  display: block;
+  font-weight: bold;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  text-decoration: none;
+  width: 100px;
+}
+
+.whale-link:hover {
+  background: none;
+}
+
+.whale-view-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.whale-image {
+  height: 256px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  width: 256px;
+}
+
+.whale-image:not(:hover) > img {
+  height: 100%;
+  width: 100%;
+}
+
+.whale-image:hover {
+  border: none;
+  z-index: 1;
+}
+
+.whale-image:not(:hover) {
+  z-index: 0;
+}
+
+.upload {
+  background-color: darkblue;
+  box-shadow: 2px 2px 2px 0px #999;
+  bottom: 30px;
+  color: white;
+  border-radius: 50%;
+  font-size: 36px;
+  font-weight: bold;
+  height: 64px;
+  line-height: 64px;
+  position: fixed;
+  right: 30px;
+  text-align: center;
+  width: 64px;
+  z-index: 2;
+}
+
+#upload {
+  cursor: pointer;
+  font-size: 100px;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+}
