@@ -113,11 +113,23 @@ body {
 }
 
 .preview > * {
+  height: 100%;
+  width: 50%;
+}
+
+.preview-image {
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: center;
-  overflow: hidden;
-  width: 50%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.preview-results .whale-image {
+  display: inline-block;
+}
+
+.preview-image > img {
+  border: 1px solid darkblue;
 }
