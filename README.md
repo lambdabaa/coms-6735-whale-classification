@@ -1,8 +1,7 @@
 coms-6735-whale-classification
 ==============================
 
-Model and paper studying humpback whale classification
-https://docs.google.com/document/d/1819fWJdE9d4VSCWt8ue_HQ9Xpagd4DHVqoZJyBOip6Q/edit?usp=sharing
+Model and paper studying humpback whale classification https://latexbase.com/p/1c6b9e66-eb7f-4b03-ac04-0f854c0f9163
 
 ### Usage
 
