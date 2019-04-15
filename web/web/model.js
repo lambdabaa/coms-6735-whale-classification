@@ -10,10 +10,14 @@ window.predict = (image, callback) => {
     canvas.width = 224;
     const context = canvas.getContext('2d');
     context.drawImage(image, 0, 0, 224, 224);
-    const x = tf.browser.fromPixels(context.getImageData(0, 0, 224, 224));
+    const x = tf.browser.fromPixels(context.getImageData(0, 0, 224, 224), 3);
     const result = model.predict(x.reshape([1, 224, 224, 3]));
-    const array = result.arraySync();
-    const idx = tf.argMax(array, 1).arraySync()[0];
-    callback([classes[idx], array[0][idx]]);
+    const array = result.arraySync()[0];
+    const indexes = [...Array(array.length).keys()];
+    const sorted = indexes.sort((a, b) => array[b] - array[a]);
+    callback(
+      sorted
+        .slice(0, 5)
+        .map(idx => [classes[idx], array[idx]]));
   });
 };

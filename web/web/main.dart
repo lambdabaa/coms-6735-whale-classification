@@ -76,25 +76,24 @@ HtmlElement previewImage(State state) {
       var result = context['predict'].apply([
         image,
         allowInterop((prediction) {
-          AnchorElement link = AnchorElement();
-          HtmlElement results = document.getElementsByClassName('preview-results')[0];
-          HeadingElement heading = HeadingElement.h2();
-          String whaleId = prediction[0];
-          heading.text = '${whaleId} (Probability: ${prediction[1]})';
-          link.children.add(heading);
-          link.href = '#!/whale/${whaleId}';
-          results.children.add(link);
-          DivElement container = DivElement();
-          container.className = 'preview-results-thumbnails';
-          whales[whaleId].forEach((String imageId) {
-            DivElement imageContainer = DivElement();
-            imageContainer.className = 'whale-image';
-            ImageElement whale = ImageElement();
-            whale.src = '/images/original/$imageId';
-            imageContainer.children.add(whale);
-            results.children.add(imageContainer);
+          prediction.forEach((whale) {
+            HtmlElement results = document.getElementsByClassName('preview-results')[0];
+            String whaleId = whale[0];
+            var probability = whale[1];
+            whales[whaleId].forEach((String imageId) {
+              AnchorElement imageContainer = AnchorElement();
+              imageContainer.className = 'whale-image';
+              imageContainer.href = '#!/whale/${whaleId}';
+              ImageElement whale = ImageElement();
+              whale.src = '/images/original/$imageId';
+              imageContainer.children.add(whale);
+              DivElement desc = DivElement();
+              desc.text = probability.toString();
+              desc.className = 'whale-probability';
+              imageContainer.children.add(desc);
+              results.children.add(imageContainer);
+            });
           });
-          results.children.add(container);
         }),
       ]);
     });
@@ -120,7 +119,7 @@ HtmlElement uploadView(State state) {
   HeadingElement left = HeadingElement.h1();
   left.text = 'Uploaded';
   HeadingElement right = HeadingElement.h1();
-  right.text = 'Best Match';
+  right.text = 'Best Matches';
   header.children.add(left);
   header.children.add(right);
   DivElement element = DivElement();

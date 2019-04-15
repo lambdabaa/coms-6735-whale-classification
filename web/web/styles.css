@@ -128,8 +128,24 @@ body {
 
 .preview-results .whale-image {
   display: inline-block;
+  position: relative;
+}
+
+.preview-results .whale-image > img {
+  height: 100%;
+  width: 100%;
 }
 
 .preview-image > img {
   border: 1px solid darkblue;
+}
+
+.whale-probability {
+  background: rgba(0, 0, 0, 0.6);
+  bottom: 0;
+  color: white;
+  height: 20px;
+  left: 0;
+  position: absolute;
+  right: 0;
 }
