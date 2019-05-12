@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Implements AlexNet (Krizhevsky et al., 2012)."""
 
 import PIL
 import json
